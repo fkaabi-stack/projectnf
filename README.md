@@ -11,11 +11,13 @@ Instead of working directly with image pixels (due to cluster restrictions), we 
 
 # Pipeline Steps
 1. Data Ingestion:
+   
 -Uploaded dataset to Azure Data Lake Storage (ADLS) under a structured Lakehouse folder.
 
 -Built an ADF Copy Data pipeline to convert metadata from CSV → Parquet.
 
-3. Data Cleaning (Databricks):
+2. Data Cleaning (Databricks):
+   
 -Removed corrupted or missing image entries.
 
 -Dropped images where file size ≤ 0.
@@ -24,28 +26,38 @@ Instead of working directly with image pixels (due to cluster restrictions), we 
 
 -Saved cleaned metadata to the Gold layer.
 
-5. Feature Engineering:
+3. Feature Engineering:
+   
 -Created engineered features from metadata:
+
 size_kb (image size in kilobytes)
+
 size_bucket (small / medium / large)
+
 Split dataset into train (70%), validation (15%), and test (15%).
+
 Saved engineered datasets as Delta tables.
 
-6. Baseline Model (Threshold Classifier):
+4. Baseline Model (Threshold Classifier):
 Because Spark ML algorithms were restricted, we trained a threshold‑based model:
 
 Predict "tumor" if size_kb > threshold.
 
 We tested thresholds: 80, 40, 20, 15, 10, 5
+
 and selected 10 KB as the best-performing threshold.
+
 ** Final Model Performance (Threshold = 10 KB)** 
 Accuracy: ~73%
 Precision: ~70%
 Recall: ~94% (most important for medical detection)
 
 5. Deployment & Monitoring:
+   
 -Deployed the model as a reusable Spark UDF (predict_tumor()).
+
 -Evaluated the model on test data.
+
 -No drift observed between validation and test performance.
 
 # Summary:
