@@ -12,22 +12,26 @@ Instead of working directly with image pixels (due to cluster restrictions), we 
 # Pipeline Steps
 1. Data Ingestion:
 -Uploaded dataset to Azure Data Lake Storage (ADLS) under a structured Lakehouse folder.
+
 -Built an ADF Copy Data pipeline to convert metadata from CSV → Parquet.
 
-2. Data Cleaning (Databricks):
+3. Data Cleaning (Databricks):
 -Removed corrupted or missing image entries.
+
 -Dropped images where file size ≤ 0.
+
 -Created numeric label (label_index: 1 = tumor, 0 = normal).
+
 -Saved cleaned metadata to the Gold layer.
 
-3. Feature Engineering:
+5. Feature Engineering:
 -Created engineered features from metadata:
 size_kb (image size in kilobytes)
 size_bucket (small / medium / large)
 Split dataset into train (70%), validation (15%), and test (15%).
 Saved engineered datasets as Delta tables.
 
-4. Baseline Model (Threshold Classifier):
+6. Baseline Model (Threshold Classifier):
 Because Spark ML algorithms were restricted, we trained a threshold‑based model:
 
 Predict "tumor" if size_kb > threshold.
