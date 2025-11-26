@@ -47,7 +47,8 @@ We tested thresholds: 80, 40, 20, 15, 10, 5
 
 and selected 10 KB as the best-performing threshold.
 
-** Final Model Performance (Threshold = 10 KB)** 
+Final Model Performance (Threshold = 10 KB):
+
 Accuracy: ~73%
 Precision: ~70%
 Recall: ~94% (most important for medical detection)
